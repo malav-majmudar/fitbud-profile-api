@@ -8,7 +8,7 @@ const User = require("../models/profileSchema.js")
 router.post('/', async (req, res) =>  {
     //creating a new user under input arguments
     const user = new User({
-        userId: req.body.userId,
+        _id: req.body.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         profilePicture: req.body.profilePicture,

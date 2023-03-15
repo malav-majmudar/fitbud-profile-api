@@ -16,7 +16,7 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
-app.listen(8002, () => console.log('Server Started'))
+app.listen(process.env.LISTEN_PORT, () => console.log('Server Started'))
 
 const usersRouter = require('./routes/users')
 const profileRouter = require('./routes/createProfile')
