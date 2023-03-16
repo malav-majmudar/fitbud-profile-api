@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require("../models/profileSchema.js")
-const { Types } = require('mongoose');
+const mongoose = require('mongoose');
 
 //retrieve user
 router.get('/:userId', async (request,response) => {
