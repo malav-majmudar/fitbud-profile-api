@@ -43,7 +43,7 @@ router.patch('/:userId', async (req,response) => {
         preferences: req.body.preferences
       };
       console.log(updateUser)
-      
+
       const updatedUser = await User.findByIdAndUpdate(
         req.params.userId,
         updateUser
@@ -59,6 +59,7 @@ router.patch('/:userId', async (req,response) => {
 //delete user profile entries
 //tell dan to call this under gateway for deleteAccount
 router.delete("/:userId", async (request, response) => {
+  console.log("got request: ",request.params.userId)
   try {
     if (request.params.userId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
