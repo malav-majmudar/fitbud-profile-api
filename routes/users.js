@@ -42,7 +42,8 @@ router.patch('/:userId', async (req,response) => {
         goals: req.body.goals,
         preferences: req.body.preferences
       };
-
+      console.log(updateUser)
+      
       const updatedUser = await User.findByIdAndUpdate(
         req.params.userId,
         updateUser
