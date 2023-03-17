@@ -59,13 +59,13 @@ router.patch('/:userId', async (req,response) => {
 //delete user profile entries
 //tell dan to call this under gateway for deleteAccount
 router.delete("/:userId", async (request, response) => {
-  console.log("got request: ",request.params.userId)
+  console.log("got request: ", JSON.stringify(request.params.userId))
   try {
     if (request.params.userId.length != 24) {
       response.status(400).json({ message: "Invalid ID" });
     } else {
       await User.deleteOne({
-        _id: request.params.userId,
+        _id: JSON.stringify(request.params.userId),
       });
       response.status(200).json({message: "Account deleted"})
     }
