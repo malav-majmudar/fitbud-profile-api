@@ -27,7 +27,7 @@ const user_schema = new mongoose.Schema({
 
     sex:{
         type: String,
-        required: false
+        required: true
     },
 
     heightCM:{
