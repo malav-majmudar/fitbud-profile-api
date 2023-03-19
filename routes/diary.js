@@ -193,11 +193,7 @@ router.get('/:diaryId', async (request, response) => {
         } 
         else {
           const diary = await Diary.findById(request.params.diaryId);
-          if(request.body.userId !== diary.userId) {
-            response.status(404).send({ message: "Invalid User Access!" });
-          }
-
-          else if(diary === null) {
+          if(diary === null) {
             response.status(404).send({ message: "Diary Not Found!" });
           } 
           
