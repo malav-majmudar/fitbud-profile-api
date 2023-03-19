@@ -57,7 +57,6 @@ router.patch('/:userId', async (req,response) => {
 })
 
 //delete user profile entries
-//tell dan to call this under gateway for deleteAccount
 router.delete("/:userId", async (request, response) => {
   console.log("got request: ", request.params.userId)
   try {

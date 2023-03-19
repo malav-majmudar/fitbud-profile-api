@@ -31,7 +31,9 @@ app.use((req, res, next) => {
 
 const usersRouter = require('./routes/users')
 const profileRouter = require('./routes/createProfile')
+const diaryRouter = require('./routes/diary')
+
 
 app.use('/users', usersRouter)     
 app.use('/createProfile', profileRouter)    
-
+app.use('/diary', diaryRouter)

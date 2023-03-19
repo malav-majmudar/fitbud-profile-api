@@ -1,139 +1,342 @@
 const mongoose = require('mongoose')
-
 const diary_schema = new mongoose.Schema({
-    userId: String,
-    timestamp: Date,
-    numLogs: Number,
-    meal1: {
-      foodLogs: [
-        {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
+    userId:{
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
     },
-    meal2: {
-      foodLogs: [
-        {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
+
+    timestamp:{ 
+      type: Date,
+      required: true
     },
-    meal3: {
-      foodLogs: [
-        {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
+
+    numLogs:{
+      type: Number,
+      required: true
     },
-    meal4: {
-      foodLogs: [
+
+    meal1:{
+      foodLogs:[
         {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
-    },
-    meal5: {
-      foodLogs: [
-        {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
-    },
-    meal6: {
-      foodLogs: [
-        {
-          foodId: String,
-          servingName: String,
-          numServing: Number,
-          quantityMetric: Number
-        }
-      ],
-      recipeLogs: [
-        {
-          recipeId: String,
-          numServing: Number
-        }
-      ]
-    },
-    exercise: {
-      strengthLogs: [
-          {
-              exerciseId: String,
-              sets: Number,
-              reps: Number,
-              weightKg: Number
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
           }
+        }
       ],
-      cardioLogs: [
-          {
-              exerciseId: String,
-              durationMinutes: Number 
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
           }
+        }
+      ]
+    },
+
+    meal2:{
+      foodLogs:[
+        {
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
+          }
+        }
       ],
-      workoutLogs: [
-          {
-            workoutId: String,
-            workoutName: String,
-            strengthExercises: [
-              {
-                exerciseId: String,
-                sets: Number,
-                reps: [Number],
-                weightKg: [Number]
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          }
+        }
+      ]
+    },
+
+    meal3:{
+      foodLogs:[
+        {
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          }
+        }
+      ]
+    },
+
+    meal4:{
+      foodLogs:[
+        {
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          }
+        }
+      ]
+    },
+
+    meal5:{
+      foodLogs:[
+        {
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          }
+        }
+      ]
+    },
+
+    meal6:{
+      foodLogs:[
+        {
+          foodId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          servingName:{
+            type: String,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          },
+          
+          quantityMetric:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      recipeLogs:[
+        {
+          recipeId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          numServing:{
+            type: Number,
+            required: false
+          }
+        }
+      ]
+    },
+
+    exercise:{
+      strengthLogs:[
+        {
+          exerciseId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          sets:{
+            type: Number,
+            required: false
+          },
+
+          reps:{
+            type: Number,
+            required: false
+          },
+
+          weightKg:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      cardioLogs:[
+        {
+          exerciseId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          durationMinutes:{
+            type: Number,
+            required: false
+          }
+        }
+      ],
+
+      workoutLogs:[
+        {
+          workoutId:{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false
+          },
+
+          workoutName:{
+            type: String,
+            required: false
+          },
+
+          strengthExercises:[
+            {
+              exerciseId:{
+                type: String,
+                required: false
+              },
+
+              sets:{
+                type: Number,
+                required: false
+              },
+
+              reps: [Number],
+              weightKg: [Number]
+            }
+          ],
+
+          cardioExercises:[
+            {
+              exerciseId:{
+                type: mongoose.Schema.Types.ObjectId,
+                required: false
+              },
+
+              durationMinutes:{
+                type: Number,
+                required: false
               }
-            ],
-            cardioExercises: [
-              {
-                exerciseId: String,
-                durationMinutes: Number
-              }
-            ]
-          }
+            }
+          ]
+        }
       ]
     }
 })
