@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 
 router.post("/", async (request, response) => {
+    console.log(request.body)
     try{
         const diary = new Diary({
             userId: request.body.userId,
