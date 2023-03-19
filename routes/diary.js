@@ -11,7 +11,7 @@ router.post("/", async (request, response) => {
     try{
         const diary = new Diary({
             userId: request.body.userId,
-            timestamp: request.query.date,
+            timestamp: new Date(request.query.date),
             numLogs: 50
         })
         console.log(diary)
