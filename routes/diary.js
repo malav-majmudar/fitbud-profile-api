@@ -7,12 +7,11 @@ const mongoose = require('mongoose');
 
 
 router.post("/", async (request, response) => {
-    console.log(request.body)
     try{
         const diary = new Diary({
             userId: request.body.userId,
             timestamp: new Date(request.query.date),
-            numLogs: 50
+            numLogs: 25
         })
         console.log(diary)
         if(request.body.type === "food") {
@@ -42,14 +41,14 @@ router.post("/", async (request, response) => {
         
         try{
             const newdiary = await diary.save()
-            response.status(201).json({message: "Diary Created!"})
+            return response.status(201).send({message: "Diary Created!"})
         }
         catch(err){
-            response.status(400).json({message: err.message})
+            return response.status(400).send({message: err.message})
         }
 
     } catch(e){
-        response.status(500).json({ message: "Internal Error" });
+        response.status(500).send({ message: "Internal Error" });
         console.log(e);
     }
 })
