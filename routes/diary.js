@@ -215,8 +215,14 @@ router.get('/:diaryId', async (request, response) => {
 router.get('/', async (request,response) => {
     try{
         if(request.query.userId.length != 24) {
-            response.status(400).send({ message: "Invalid ID paramter!" });
-        }   
+            response.status(400).send({ message: "Invalid ID parameter!" });
+        } 
+        
+        const datecheck = new RegExp(/^\d{4}-\d{2}-\d{2}$/)
+
+        if(!datecheck(request.query.date)){
+            response.status(400).send({ message: "Invalid date format!" });
+        }
 
         const userId = new Mongoose.Types.ObjectId(request.query.userID)
         const date = new Date(request.query.date)
