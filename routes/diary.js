@@ -224,11 +224,12 @@ router.get('/', async (request,response) => {
         const date = new Date(request.query.date)
         const diary = await Diary.find({ userId: userId, timestamp: date })
 
-        if(diary === null) {
+        if(!diary) {
             response.status(404).send({ message: "Diary Not Found!" });
         }
 
         else{
+            console.log(diary)
             response.status(200);
             response.send(diary); 
         }
