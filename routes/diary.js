@@ -62,7 +62,7 @@ router.patch("/:diaryId", async (request, response) => {
     const diary = await Diary.findById(diaryId)
     try{
         console.log("diary userId: ", diary.userId, " and type: ", typeof diary.userId)
-        console.log("request userId: ", request.body.userId, " and type: ", typeof request.body.userId)
+        console.log("request userId: ", request.body.userId, " and type: ", typeof new mongoose.Types.ObjectId(request.body.userId))
         if(diary.userId !== new mongoose.Types.ObjectId(request.body.userId)) {
             return response.status(400).send({ message: "Invalid user access!" });
         }
