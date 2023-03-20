@@ -220,8 +220,10 @@ router.get('/', async (request,response) => {
             response.status(400).send({ message: "Invalid date format!" });
         }
 
-        const userId = new mongoose.Types.ObjectId(request.query.userID)
+        const userId = new mongoose.Types.ObjectId(request.query.userId)
         const date = new Date(request.query.date)
+        console.log("date: ", date)
+        console.log("userId:", userId)
         const diary = await Diary.findOne({ userId: userId, timestamp: date })
 
         if(!diary) {
