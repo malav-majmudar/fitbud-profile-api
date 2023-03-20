@@ -59,7 +59,7 @@ router.post("/", async (request, response) => {
 router.patch("/:diaryId", async (request, response) => {
     console.log(request.body)
     const diaryId = request.params.diaryId
-    const diary = await Diary.findById({ diaryId })
+    const diary = await Diary.findById(diaryId)
     try{
         if(diary.userId !== request.body.userId) {
             return response.status(400).send({ message: "Invalid user access!" });
