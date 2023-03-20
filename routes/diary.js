@@ -65,7 +65,7 @@ router.patch("/:diaryId", async (request, response) => {
             return response.status(400).send({ message: "Invalid user access!" });
         }
         else if(request.params.diaryId.length != 24) {
-            return response.status(400).json({ message: "Invalid ID Parameter" });
+            return response.status(400).send({ message: "Invalid ID Parameter" });
         }
 
         else if(diary.numLogs === 0) {
