@@ -222,7 +222,7 @@ router.get('/', async (request,response) => {
 
         const userId = new mongoose.Types.ObjectId(request.query.userID)
         const date = new Date(request.query.date)
-        const diary = await Diary.find({ userID: userId, date: date })
+        const diary = await Diary.find({ userId: userId, date: date })
 
         if(diary === null) {
             response.status(404).send({ message: "Diary Not Found!" });
