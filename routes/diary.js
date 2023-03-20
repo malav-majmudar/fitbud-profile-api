@@ -216,7 +216,7 @@ router.get('/', async (request,response) => {
         
         const datecheck = new RegExp(/^\d{4}-\d{2}-\d{2}$/)
 
-        if(!datecheck(request.query.date)){
+        if(!datecheck.test(request.query.date)) {
             response.status(400).send({ message: "Invalid date format!" });
         }
 
