@@ -81,11 +81,13 @@ router.patch("/:diaryId", async (request, response) => {
                 if(request.body.action === "addLog") {
                     tempFoodLog = { foodId:request.body.contents.foodId, servingName:request.body.contents.servingName, numServing:request.body.contents.numServings, quantityMetric:request.body.contents.quantityMetric }
                     diary[request.body.contents.mealPosition].foodLogs.push(tempFoodLog)
+                    diary.numLogs = diary.numLogs - 1
                     console.log("food log added")
                 }
 
                 else if(request.body.action === "deleteLog") {
                     diary[request.body.contents.mealPosition].foodLogs.splice(request.body.contents.logPosition,1)
+                    diary.numLogs = diary.numLogs + 1
                     console.log("food log deleted")
                 }
                 
@@ -101,11 +103,13 @@ router.patch("/:diaryId", async (request, response) => {
                 if(request.body.action === "addLog") {
                     tempRecipeLog = { recipeId:request.body.contents.recipeId, numServings:request.body.contents.numServings }
                     diary[request.body.contents.mealPosition].recipeLogs.push(tempRecipeLog)
+                    diary.numLogs = diary.numLogs - 1
                     console.log("recipe log added")
                 }
 
                 else if(request.body.action === "deleteLog") {
                     diary[request.body.contents.mealPosition].recipeLogs.splice(request.body.contents.logPosition,1)
+                    diary.numLogs = diary.numLogs + 1
                     console.log("recipe log deleted")
                 }
 
@@ -121,11 +125,13 @@ router.patch("/:diaryId", async (request, response) => {
                 if(request.body.action === "addLog") {
                     tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.content.reps, sets:request.body.content.sets, weightKg:request.body.content.weightKg }
                     diary['exercise'].strengthLogs.push(tempStrengthLog)
+                    diary.numLogs = diary.numLogs - 1
                     console.log("strength log added")
                 }
 
                 else if(request.body.action === "deleteLog") {
                     diary['exercise'].strengthLogs.splice(request.body.content.logPosition,1)
+                    diary.numLogs = diary.numLogs + 1
                     console.log("strength log deleted")
                 }
 
@@ -141,11 +147,13 @@ router.patch("/:diaryId", async (request, response) => {
                 if(request.body.action === "addLog") {
                     tempCardioLog = { exerciseId:request.body.contents.exerciseId, durationMinutes:request.body.contents.duration}
                     diary['exercise'].cardioLogs.push(tempCardioLog)
+                    diary.numLogs = diary.numLogs - 1
                     console.log("cardio log added")
                 }
 
                 else if(request.body.action === "deleteLog") {
                     diary['exercise'].cardioLogs.splice(request.body.content.logPosition,1)
+                    diary.numLogs = diary.numLogs + 1
                     console.log("cardio log deleted")
                 }
 
@@ -161,11 +169,13 @@ router.patch("/:diaryId", async (request, response) => {
                 if(request.body.action === "addLog") {
                     tempWorkoutLog = { workoutId:request.body.contents.workoutId, strengthExercises:request.body.contents.strengthExercises, cardioExercises:request.body.contents.cardioExercises }
                     diary['exercise'].workoutLogs.push(tempWorkoutLog)
+                    diary.numLogs = diary.numLogs - 1
                     console.log("workout log will be added")
                 }
 
                 else if(request.body.action === "deleteLog") {
                     diary['exercise'].workoutLogs.splice(request.body.logPosition,1)
+                    diary.numLogs = diary.numLogs + 1
                     console.log("workout log deleted")
                 }
 
@@ -241,5 +251,28 @@ router.get('/', async (request,response) => {
     }
 })
 
+
+router.delete("/", async (request, response) => {
+    try {
+        if (request.query.userId.length != 24) {
+          response.status(400).json({ message: "Invalid UserId" });
+        } 
+        else {
+          const diary = await Diary.deleteMany({
+            userId: request.query.userId,
+          });
+          console.log(diary);
+          if (diary.deletedCount === 0) {
+            response.status(404).json({ message: "Diaries Not Found" });
+          } else {
+            response.status(200);
+            response.send({ message: "Diaries successfully deleted!" });
+          }
+        }
+      } catch (e) {
+        response.status(500).json({ message: "Internal Error" });
+        console.log(e);
+      }
+})
 
 module.exports = router
