@@ -268,15 +268,9 @@ const diary_schema = new mongoose.Schema({
             required: false
           },
 
-          reps:{
-            type: Number,
-            required: false
-          },
+          reps:[Number],
 
-          weightKg:{
-            type: Number,
-            required: false
-          }
+          weightKg:[Number]
         }
       ],
 
@@ -318,15 +312,9 @@ const diary_schema = new mongoose.Schema({
                 required: false
               },
 
-              reps: [{
-                type: Number,
-                required: false
-              }],
+              reps: [Number],
 
-              weightKg: [{
-                type: Number,
-                required: false
-              }]
+              weightKg:[Number]
             }
           ],
 
