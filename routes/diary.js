@@ -26,7 +26,7 @@ router.post("/", async (request, response) => {
         }
     
         else if(request.body.type === "strength") {
-            tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.content.reps, sets:request.body.content.sets, weightKg:request.body.content.weightKg }
+            tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.contents.reps, sets:request.body.contents.sets, weightKg:request.body.contents.weightKg }
             diary['exercise'].strengthLogs.push(tempStrengthLog)
         }
     
@@ -123,21 +123,21 @@ router.patch("/:diaryId", async (request, response) => {
             else if(request.body.type === "strength") {
                 console.log("strength log will be accessed")
                 if(request.body.action === "addLog") {
-                    tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.content.reps, sets:request.body.content.sets, weightKg:request.body.content.weightKg }
+                    tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.contents.reps, sets:request.body.contents.sets, weightKg:request.body.contents.weightKg }
                     diary['exercise'].strengthLogs.push(tempStrengthLog)
                     diary.numLogs = diary.numLogs - 1
                     console.log("strength log added")
                 }
 
                 else if(request.body.action === "deleteLog") {
-                    diary['exercise'].strengthLogs.splice(request.body.content.logPosition,1)
+                    diary['exercise'].strengthLogs.splice(request.body.contents.logPosition,1)
                     diary.numLogs = diary.numLogs + 1
                     console.log("strength log deleted")
                 }
 
                 else if(request.body.action === "updateLog") {
-                    tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.content.reps, sets:request.body.content.sets, weightKg:request.body.content.weightKg }
-                    diary['exercise'].strengthLogs.splice(request.body.content.logPosition,1, tempStrengthLog)
+                    tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.contents.reps, sets:request.body.contents.sets, weightKg:request.body.contents.weightKg }
+                    diary['exercise'].strengthLogs.splice(request.body.contents.logPosition,1, tempStrengthLog)
                     console.log("strength log updated")
                 }
             }
@@ -152,14 +152,14 @@ router.patch("/:diaryId", async (request, response) => {
                 }
 
                 else if(request.body.action === "deleteLog") {
-                    diary['exercise'].cardioLogs.splice(request.body.content.logPosition,1)
+                    diary['exercise'].cardioLogs.splice(request.body.contents.logPosition,1)
                     diary.numLogs = diary.numLogs + 1
                     console.log("cardio log deleted")
                 }
 
                 else if(request.body.action === "updateLog") {
                     tempCardioLog = { exerciseId:request.body.contents.exerciseId, durationMinutes:request.body.contents.duration}
-                    diary['exercise'].cardioLogs.splice(request.body.content.logPosition,1,tempCardioLog)
+                    diary['exercise'].cardioLogs.splice(request.body.contents.logPosition,1,tempCardioLog)
                     console.log("cardio log updated")
                 }
             }
