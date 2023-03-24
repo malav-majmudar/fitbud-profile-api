@@ -78,6 +78,9 @@ router.patch("/:diaryId", async (request, response) => {
 
             if(request.body.type === "food") {
                 console.log("food log will be accessed")
+                console.log(request.body.action === "addLog")
+                console.log(request.body.action === "deleteLog")
+                console.log(request.body.action === "updateLog")
                 if(request.body.action === "addLog") {
                     tempFoodLog = { foodId:request.body.contents.foodId, servingName:request.body.contents.servingName, numServing:request.body.contents.numServings, quantityMetric:request.body.contents.quantityMetric }
                     console.log(tempFoodLog)
@@ -102,6 +105,9 @@ router.patch("/:diaryId", async (request, response) => {
 
             else if(request.body.type === "recipe"){
                 console.log("recipe log will be accessed")
+                console.log(request.body.action === "addLog")
+                console.log(request.body.action === "deleteLog")
+                console.log(request.body.action === "updateLog")
                 if(request.body.action === "addLog") {
                     tempRecipeLog = { recipeId:request.body.contents.recipeId, numServings:request.body.contents.numServings }
                     console.log(tempRecipeLog)
@@ -126,6 +132,9 @@ router.patch("/:diaryId", async (request, response) => {
 
             else if(request.body.type === "strength") {
                 console.log("strength log will be accessed")
+                console.log(request.body.action === "addLog")
+                console.log(request.body.action === "deleteLog")
+                console.log(request.body.action === "updateLog")
                 if(request.body.action === "addLog") {
                     tempStrengthLog = { exerciseId:request.body.contents.exerciseId, reps:request.body.contents.reps, sets:request.body.contents.sets, weightKg:request.body.contents.weightKg }
                     console.log(tempStrengthLog)
@@ -134,6 +143,7 @@ router.patch("/:diaryId", async (request, response) => {
                     console.log("strength log added")
                 }
 
+                
                 else if(request.body.action === "deleteLog") {
                     diary['exercise'].strengthLogs.splice(request.body.contents.logPosition,1)
                     diary.numLogs = diary.numLogs + 1
@@ -150,6 +160,9 @@ router.patch("/:diaryId", async (request, response) => {
 
             else if(request.body.type === "cardio") {
                 console.log("cardio log will be accessed")
+                console.log(request.body.action === "addLog")
+                console.log(request.body.action === "deleteLog")
+                console.log(request.body.action === "updateLog")
                 if(request.body.action === "addLog") {
                     tempCardioLog = { exerciseId:request.body.contents.exerciseId, durationMinutes:request.body.contents.duration}
                     console.log(tempCardioLog)
@@ -174,6 +187,9 @@ router.patch("/:diaryId", async (request, response) => {
 
             else if(request.body.type === "workout") {
                 console.log("workout log will be accessed")
+                console.log(request.body.action === "addLog")
+                console.log(request.body.action === "deleteLog")
+                console.log(request.body.action === "updateLog")
                 if(request.body.action === "addLog") {
                     tempWorkoutLog = { workoutId:request.body.contents.workoutId, strengthExercises:request.body.contents.strengthExercises, cardioExercises:request.body.contents.cardioExercises }
                     console.log(tempWorkoutLog)
