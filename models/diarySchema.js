@@ -309,7 +309,7 @@ const diary_schema = new mongoose.Schema({
           strengthExercises:[
             {
               exerciseId:{
-                type: String,
+                type: mongoose.Schema.Types.ObjectId,
                 required: false
               },
 
@@ -318,8 +318,15 @@ const diary_schema = new mongoose.Schema({
                 required: false
               },
 
-              reps: [Number],
-              weightKg: [Number]
+              reps: [{
+                type: Number,
+                required: false
+              }],
+
+              weightKg: [{
+                type: Number,
+                required: false
+              }]
             }
           ],
 
