@@ -15,6 +15,16 @@ const diary_schema = new mongoose.Schema({
       required: true
     },
 
+    currentWeight:{
+      type: Number,
+      required: false
+    },
+
+    currentPercentBodyFat:{
+      type: Number,
+      required: false,
+  },
+
     meal1:{
       foodLogs:[
         {
