@@ -45,16 +45,6 @@ const user_schema = new mongoose.Schema({
         required: false
     },
 
-    currentWeightKg:{
-        type: Number,
-        required: false
-    },
-
-    percentBodyFat:{
-        type: Number,
-        required: false,
-    },
-
     goals:{
         weightGoal:{
             type: Number,
