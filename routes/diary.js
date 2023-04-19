@@ -9,7 +9,7 @@ router.post("/", async (request, response) => {
 		const diary = new Diary({
 			userId: request.body.userId,
 			timestamp: new Date(request.query.date),
-			numLogs: 29,
+			numLogs: 30,
 			currentWeight: request.body.currentWeight,
 			currentPercentBodyFat: request.body.currentPercentBodyFat,
 		});
@@ -21,12 +21,14 @@ router.post("/", async (request, response) => {
 				quantityMetric: request.body.contents.quantityMetric,
 			};
 			diary[request.body.contents.mealPosition].foodLogs.push(tempFoodLog);
+      diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "recipe") {
 			tempRecipeLog = {
 				recipeId: request.body.contents.recipeId,
 				numServings: request.body.contents.numServings,
 			};
 			diary[request.body.contents.mealPosition].recipeLogs.push(tempRecipeLog);
+      diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "strength") {
 			tempStrengthLog = {
 				exerciseId: request.body.contents.exerciseId,
@@ -35,18 +37,21 @@ router.post("/", async (request, response) => {
 				weightKg: request.body.contents.weightKg,
 			};
 			diary["exercise"].strengthLogs.push(tempStrengthLog);
+      diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "cardio") {
 			tempCardioLog = {
 				exerciseId: request.body.contents.exerciseId,
 				durationMinutes: request.body.contents.duration,
 			};
 			diary["exercise"].cardioLogs.push(tempCardioLog);
+      diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "workout") {
 			tempWorkoutLog = {
 				workoutId: request.body.contents.workoutId,
 				strengthExercises: request.body.contents.strengthExercises,
 				cardioExercises: request.body.contents.cardioExercises,
 			};
+      diary.numLogs = diary.numLogs - 1;
 			diary["exercise"].workoutLogs.push(tempWorkoutLog);
 		}
 
