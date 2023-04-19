@@ -31,7 +31,7 @@ router.patch("/:userId", async (req, response) => {
     }
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return response.status(400).json({ message: "User not found!" });
+      return response.status(404).json({ message: "User not found!" });
     }
 
     const updateUser = {
@@ -53,8 +53,7 @@ router.patch("/:userId", async (req, response) => {
       req.params.userId,
       updateUser
     );
-    response.status(200).json(updatedUser);
-    console.log(updatedUser);
+    response.status(200).json({ message: "User was successfully updated" });
   } catch (e) {
     response.status(500).json({ message: "Internal Error" });
     console.log(e);
