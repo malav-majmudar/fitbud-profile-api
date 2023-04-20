@@ -35,17 +35,6 @@ router.post("/", async (req, res) => {
 		},
 	});
 
-	//defaulting the meal names to commonly used names
-	if (!req.body.preferences.mealNames) {
-		const mealNames = ["Breakfast", "Lunch", "Dinner", "Snacks", null, null];
-		user.preferences.mealNames = mealNames;
-	}
-
-	//defaulting the unit preference if it isn't imperial or metric
-	if (user.preferences.unitPreference !== "imperial" && user.preferences.unitPreference !== "metric") {
-		user.preferences.unitPreference = "imperial";
-	}
-
 	//try catch relating to creating a new user object
 	try {
 		const newuser = await user.save();

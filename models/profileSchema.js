@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const user_schema = new mongoose.Schema({
-	_id:{
-	    type: mongoose.Schema.Types.ObjectId,
-	    required: true
-	},
+	// _id:{
+	//     type: mongoose.Schema.Types.ObjectId,
+	//     required: true
+	// },
 
 	firstName: {
 		type: String,
@@ -109,14 +109,15 @@ const user_schema = new mongoose.Schema({
 
 		unitPreference: {
 			type: String,
-			required: false,
+			required: true,
 			default: "imperial",
 			enum: ["imperial", "metric"],
 		},
 
 		mealNames: {
 			type: Array,
-			required: false,
+			required: true,
+            default: ["Breakfast", "Lunch", "Dinner", "Snacks", null, null]
 		},
 	},
 });
