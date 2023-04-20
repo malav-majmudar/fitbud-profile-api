@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const user_schema = new mongoose.Schema({
-	_id:{
-	    type: mongoose.Schema.Types.ObjectId,
-	    required: true
+	_id: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true,
 	},
 
 	firstName: {
@@ -43,13 +43,57 @@ const user_schema = new mongoose.Schema({
 	},
 
 	startingWeightKg: {
-		type: Number,
-		required: true,
+		value: {
+			type: Number,
+			required: true,
+		},
+
+		date: {
+			type: Date,
+			required: false,
+		},
 	},
 
-	startingWeightDate: {
-		type: Date,
-		required: false,
+	startingPercentBodyFat: {
+		value: {
+			type: Number,
+			required: false,
+			min: 0,
+			max: 1,
+			default: null,
+		},
+
+		date: {
+			type: Date,
+			required: false,
+		},
+	},
+
+	currentWeightKg: {
+		value: {
+			type: Number,
+			required: false,
+		},
+
+		date: {
+			type: Date,
+			required: false,
+		},
+	},
+
+	currentPercentBodyFat: {
+		value: {
+			type: Number,
+			required: false,
+			min: 0,
+			max: 1,
+			default: null,
+		},
+
+		date: {
+			type: Date,
+			required: false,
+		},
 	},
 
 	activityLevel: {
@@ -66,6 +110,13 @@ const user_schema = new mongoose.Schema({
 			default: null,
 		},
 
+		calorieGoal: {
+			type: Number,
+			required: false,
+			min: 0,
+			default: null,
+		},
+
 		weightDelta: {
 			type: Number,
 			required: false,
@@ -79,24 +130,24 @@ const user_schema = new mongoose.Schema({
 				type: Number,
 				required: false,
 				default: 0.33,
-                min: 0,
-                max: 1
+				min: 0,
+				max: 1,
 			},
 
 			fat: {
 				type: Number,
 				required: false,
 				default: 0.33,
-                min: 0,
-                max: 1
+				min: 0,
+				max: 1,
 			},
 
 			protein: {
 				type: Number,
 				required: false,
 				default: 0.34,
-                min: 0,
-                max: 1
+				min: 0,
+				max: 1,
 			},
 		},
 	},
@@ -117,7 +168,7 @@ const user_schema = new mongoose.Schema({
 		mealNames: {
 			type: Array,
 			required: true,
-            default: ["Breakfast", "Lunch", "Dinner", "Snacks", null, null]
+			default: ["Breakfast", "Lunch", "Dinner", "Snacks", null, null],
 		},
 	},
 });

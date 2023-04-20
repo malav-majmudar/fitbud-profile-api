@@ -1,17 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const Diary = require("../models/diarySchema.js");
+const User = require("../models/profileSchema.js")
 const mongoose = require("mongoose");
 
 router.post("/", async (request, response) => {
 	console.log(request.body);
+  let user = User.findById(request.body.userId)
+
+  if(!user) {
+    return response.status(404).send({ message: "User not found!"})
+  }
+
+  const currentWeight = user.currentWeightKg
+  const percentBodyFat = user.currentPercentBodyFat
+
 	try {
 		const diary = new Diary({
 			userId: request.body.userId,
 			timestamp: new Date(request.query.date),
 			numLogs: 30,
-			currentWeight: request.body.currentWeight,
-			currentPercentBodyFat: request.body.currentPercentBodyFat,
+			diaryWeightKg: currentWeight.value,
+			diaryPercentBodyFat: percentBodyFat.value,
 		});
 		if (request.body.type === "food") {
 			tempFoodLog = {
@@ -71,6 +81,7 @@ router.patch("/:diaryId", async (request, response) => {
 	console.log(request.body);
 	const diaryId = request.params.diaryId;
 	const diary = await Diary.findById(diaryId);
+
 	try {
 		if (String(diary.userId) !== request.body.userId) {
 			return response.status(400).send({ message: "Invalid user access!" });

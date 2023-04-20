@@ -12,8 +12,8 @@ router.post("/", async (req, res) => {
 	let year = date.getFullYear();
 
 	let currentDate = `${year}-${pad(month)}-${pad(day)}`;
-
-    console.log(currentDate)
+	currentDate = new Date(currentDate);
+	console.log(currentDate);
 
 	let user = new User({
 		_id: req.body.userId,
@@ -23,10 +23,23 @@ router.post("/", async (req, res) => {
 		birthdate: new Date(req.body.birthdate),
 		sex: req.body.sex.toLowerCase(),
 		heightCm: req.body.heightCm,
-		startingWeightKg: req.body.startingWeightKg,
-		startingWeightDate: new Date(currentDate),
-		currentWeightKg: req.body.currentWeightKg,
-		percentBodyFat: req.body.percentBodyFat,
+		startingPercentBodyFat: {
+			value: req.body.startingPercentBodyFat,
+			date: currentDate,
+		},
+		startingWeightKg: {
+			value: req.body.startingWeightKg,
+			date: currentDate,
+		},
+
+		currentWeightKg: {
+			value: req.body.startingWeightKg,
+			date: currentDate,
+		},
+		currentPercentBodyFat: {
+			value: req.body.startingPercentBodyFat,
+			date: currentDate,
+		},
 		goals: req.body.goals,
 		preferences: {
 			Location: req.body.preferences.Location,
@@ -46,11 +59,10 @@ router.post("/", async (req, res) => {
 
 //helper function to apply pad onto date
 function pad(number) {
-    if(String(number).length < 2) {
-        return "0" + number
-    }
-    else {
-        return number;
-    }
+	if (String(number).length < 2) {
+		return "0" + number;
+	} else {
+		return number;
+	}
 }
 module.exports = router;

@@ -15,12 +15,12 @@ const diary_schema = new mongoose.Schema({
 		required: true,
 	},
 
-	currentWeight: {
+	diaryWeightKg: {
 		type: Number,
 		required: false,
 	},
 
-	currentPercentBodyFat: {
+	diaryPercentBodyFat: {
 		type: Number,
 		required: false,
 	},
