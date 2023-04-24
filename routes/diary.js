@@ -1,20 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const Diary = require("../models/diarySchema.js");
-const User = require("../models/profileSchema.js")
+const User = require("../models/profileSchema.js");
 const mongoose = require("mongoose");
 
 router.post("/", async (request, response) => {
 	console.log(request.body);
-  let user = User.findById(request.body.userId)
+	let user = await User.findById(request.body.userId);
 
-  if(!user) {
-    return response.status(404).send({ message: "User not found!"})
-  }
+	if (!user) {
+		return response.status(404).send({ message: "User not found!" });
+	}
 
-  const currentWeight = user.currentWeightKg
-  const percentBodyFat = user.currentPercentBodyFat
+	console.log(user)
 
+	const currentWeight = user.currentWeightKg;
+	const percentBodyFat = user.currentPercentBodyFat;
+
+	console.log(user.currentWeightKg)
+	console.log(user.currentPercentBodyFat)
 	try {
 		const diary = new Diary({
 			userId: request.body.userId,
@@ -27,18 +31,18 @@ router.post("/", async (request, response) => {
 			tempFoodLog = {
 				foodId: request.body.contents.foodId,
 				servingName: request.body.contents.servingName,
-				numServing: request.body.contents.numServings,
+				numServings: request.body.contents.numServings,
 				quantityMetric: request.body.contents.quantityMetric,
 			};
 			diary[request.body.contents.mealPosition].foodLogs.push(tempFoodLog);
-      diary.numLogs = diary.numLogs - 1;
+			diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "recipe") {
 			tempRecipeLog = {
 				recipeId: request.body.contents.recipeId,
 				numServings: request.body.contents.numServings,
 			};
 			diary[request.body.contents.mealPosition].recipeLogs.push(tempRecipeLog);
-      diary.numLogs = diary.numLogs - 1;
+			diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "strength") {
 			tempStrengthLog = {
 				exerciseId: request.body.contents.exerciseId,
@@ -47,21 +51,21 @@ router.post("/", async (request, response) => {
 				weightKg: request.body.contents.weightKg,
 			};
 			diary["exercise"].strengthLogs.push(tempStrengthLog);
-      diary.numLogs = diary.numLogs - 1;
+			diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "cardio") {
 			tempCardioLog = {
 				exerciseId: request.body.contents.exerciseId,
 				durationMinutes: request.body.contents.duration,
 			};
 			diary["exercise"].cardioLogs.push(tempCardioLog);
-      diary.numLogs = diary.numLogs - 1;
+			diary.numLogs = diary.numLogs - 1;
 		} else if (request.body.type === "workout") {
 			tempWorkoutLog = {
 				workoutId: request.body.contents.workoutId,
 				strengthExercises: request.body.contents.strengthExercises,
 				cardioExercises: request.body.contents.cardioExercises,
 			};
-      diary.numLogs = diary.numLogs - 1;
+			diary.numLogs = diary.numLogs - 1;
 			diary["exercise"].workoutLogs.push(tempWorkoutLog);
 		}
 
@@ -99,7 +103,7 @@ router.patch("/:diaryId", async (request, response) => {
 					tempFoodLog = {
 						foodId: request.body.contents.foodId,
 						servingName: request.body.contents.servingName,
-						numServing: request.body.contents.numServings,
+						numServings: request.body.contents.numServings,
 						quantityMetric: request.body.contents.quantityMetric,
 					};
 					console.log(tempFoodLog);
@@ -114,7 +118,7 @@ router.patch("/:diaryId", async (request, response) => {
 					tempFoodLog = {
 						foodId: request.body.contents.foodId,
 						servingName: request.body.contents.servingName,
-						numServing: request.body.contents.numServings,
+						numServings: request.body.contents.numServings,
 						quantityMetric: request.body.contents.quantityMetric,
 					};
 					console.log(tempFoodLog);

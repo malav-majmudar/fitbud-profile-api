@@ -38,7 +38,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -57,7 +57,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -78,7 +78,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -97,7 +97,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -118,7 +118,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -137,7 +137,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -158,7 +158,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -177,7 +177,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -198,7 +198,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -217,7 +217,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -238,7 +238,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},
@@ -257,7 +257,7 @@ const diary_schema = new mongoose.Schema({
 					required: false,
 				},
 
-				numServing: {
+				numServings: {
 					type: Number,
 					required: false,
 				},

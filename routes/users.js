@@ -3,6 +3,27 @@ const router = express.Router();
 const User = require("../models/profileSchema.js");
 const Diary = require("../models/diarySchema.js")
 
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const Picture = require("./models/pictureSchema");
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+const s3 = new S3Client({
+	credentials: {
+		accessKeyId: accessKey,
+		secretAccessKey: secretAccessKey,
+	},
+	region: bucketRegion,
+});
 
 //retrieve user
 router.get("/:userId", async (request, response) => {
@@ -23,6 +44,43 @@ router.get("/:userId", async (request, response) => {
 		console.log(e);
 	}
 });
+
+//add profile picture
+router.post("/profilePicture", async (request, response) => {
+	console.log("req.body", request.body);
+	console.log("req.file", request.file);
+
+	try {
+		const params = {
+			Bucket: bucketName,
+			Key: request.file.originalname,
+			Body: request.file.buffer,
+			ContentType: request.file.mimetype,
+		};
+	} catch (err) {
+		response.status(400).send({ message: "There was an error" });
+	}
+
+
+	const command = new PutObjectCommand(params);
+	await s3.send(command);
+
+	const picture = new Picture({
+		_id: request.body.userId,
+		fileName: request.file.originalname,
+	});
+
+	console.log("this is the picure object");
+	console.log(picture);
+
+	try {
+		const newpicture = await picture.save();
+		response.status(201).send({ message: "Picture saved in database and s3!" });
+	} catch (err) {
+		response.status(400).send({ message: err.message });
+	}
+});
+
 
 //update user profile entries
 router.patch("/:userId", async (req, response) => {
