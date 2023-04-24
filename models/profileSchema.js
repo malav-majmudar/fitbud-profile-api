@@ -15,9 +15,11 @@ const user_schema = new mongoose.Schema({
 		required: true,
 	},
 
-	profilePicture: {
-		type: String,
+	hasProfilePicture: {
+		type: Boolean,
 		required: false,
+		enum: [false, true],
+		default: false
 	},
 
 	timestamp: {

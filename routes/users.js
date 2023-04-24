@@ -44,26 +44,54 @@ router.get("/:userId", async (request, response) => {
 	}
 });
 
+//get profile picture
+router.get("/profilePicture/:userId", async (request, response) => {
+	try {
+		let user = await User.findById(request.params.userId);
+
+		if(user.hasProfilePicture === true) {
+			const getObjectParams = {
+				Bucket: bucketName,
+				Key: request.params.fileName,
+			};
+
+			const command = new GetObjectCommand(getObjectParams);
+			const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+			response.status(200).send(url)
+		}
+		else {
+			response.status(400).send({message: "User does not have a profile picture!"})
+		}
+	} catch (err) {
+		response.status(500).json({ message: "Internal Error" });
+		console.log(err);
+	}
+});
+
 //add profile picture
-router.post("/profilePicture", async (request, response) => {
+router.post("/profilePicture", upload.single("image"), async (request, response) => {
 	console.log("req.body", request.body);
 	console.log("req.file", request.file);
 
 	try {
-		const params = {
-			Bucket: bucketName,
-			Key: String(request.file.userId),
-			Body: request.file.buffer,
-			ContentType: request.file.mimetype,
-		};
+		let user = await User.findById(request.body.userId);
+		try {
+			const params = {
+				Bucket: bucketName,
+				Key: String(request.body.userId),
+				Body: request.file.buffer,
+				ContentType: request.file.mimetype,
+			};
+		} catch (err) {
+			return response.status(400).send({ message: `There was an issue with image request: Error: ${err.message}` })
+		}
 		const command = new PutObjectCommand(params);
 		await s3.send(command);
+		user.hasProfilePicture = true;
+		response.status(201).send({ message: "Picture saved in database and s3!" });
 	} catch (err) {
-		response.status(400).send({ message: "There was an error" });
+		response.status(500).send({ message: `There was an error: ${err.message}` });
 	}
-
-	response.status(201).send({ message: "Picture saved in database and s3!" });
-
 });
 
 
@@ -140,6 +168,7 @@ router.delete("/:userId", async (request, response) => {
 		response.status(500).json({ message: "Internal Error" });
 		console.log(e);
 	}
+	// delete profile picture from the s3 bucket
 });
 
 //router.get('/:userId/analytics', async (request, response) => {
