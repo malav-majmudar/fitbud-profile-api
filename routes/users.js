@@ -53,32 +53,18 @@ router.post("/profilePicture", async (request, response) => {
 	try {
 		const params = {
 			Bucket: bucketName,
-			Key: request.file.originalname,
+			Key: String(request.file.userId),
 			Body: request.file.buffer,
 			ContentType: request.file.mimetype,
 		};
+		const command = new PutObjectCommand(params);
+		await s3.send(command);
 	} catch (err) {
 		response.status(400).send({ message: "There was an error" });
 	}
 
+	response.status(201).send({ message: "Picture saved in database and s3!" });
 
-	const command = new PutObjectCommand(params);
-	await s3.send(command);
-
-	const picture = new Picture({
-		_id: request.body.userId,
-		fileName: request.file.originalname,
-	});
-
-	console.log("this is the picure object");
-	console.log(picture);
-
-	try {
-		const newpicture = await picture.save();
-		response.status(201).send({ message: "Picture saved in database and s3!" });
-	} catch (err) {
-		response.status(400).send({ message: err.message });
-	}
 });
 
 
