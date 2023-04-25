@@ -63,7 +63,7 @@ router.post("/:userId", upload.single("image"), async (request, response) => {
 			params = {
 				Bucket: bucketName,
 				Key: request.params.userId,
-				Body: Buffer.from( buff.toString('hex'),'hex'),
+				Body: Buffer.from( buff, 'hex'),
 				ContentType: request.body.mimetype,
 			};
 			console.log(params)
