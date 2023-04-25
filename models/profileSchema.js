@@ -101,8 +101,8 @@ const user_schema = new mongoose.Schema({
 	activityLevel: {
 		type: String,
 		required: false,
-		default: "manual",
-		enum: ["manual", "sedentary", "light", "moderate", "heavy", "very heavy"],
+		default: "sedentary",
+		enum: ["sedentary", "light", "moderate", "heavy", "very heavy"],
 	},
 
 	goals: {

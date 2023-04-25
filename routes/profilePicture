@@ -53,6 +53,7 @@ router.get("/:userId", async (request, response) => {
 router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("userid: ", request.params.userId);
 	console.log("req.body", request.body);
+	console.log("req.file", request.file);
 	//console.log("request object", request);
 	let params;
 	try {
@@ -62,7 +63,7 @@ router.post("/:userId", upload.single("image"), async (request, response) => {
 			params = {
 				Bucket: bucketName,
 				Key: request.params.userId,
-				Body: Buffer.from( request.body.buffer.data.toString(), 'hex'),
+				Body: Buffer.from( JSON.stringify(request.body.buffer.data), 'hex'),
 				ContentType: request.body.mimetype,
 			};
 			console.log(params)
