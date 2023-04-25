@@ -37,24 +37,20 @@ router.patch("/:userId", async (req, response) => {
 		const updateUser = {
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
-			profilePicture: req.body.profilePicture,
+			hasProfilePicture: req.body.hasProfilePicture,
 			birthdate: new Date(req.body.birthdate),
 			sex: req.body.sex,
 			heightCm: req.body.heightCm,
 			currentWeightKg: {
-				value: req.body.currentWeightKg,
-				date: currentDate,
+				value: req.body.currentWeightKg.value,
+				date: req.body.currentWeightKg.date,
 			},
 			currentPercentBodyFat: {
-				value: req.body.currentPercentBodyFat,
-				date: currentDate,
+				value: req.body.currentPercentBodyFat.value,
+				date: req.body.currentPercentBodyFat.date,
 			},
-      startingPercentBodyFat: {
-        value: req.body.startingPercentBodyFat,
-      },
-      startingWeightKg: {
-        value: req.body.startingWeightKg,
-      },
+      startingPercentBodyFat: req.body.startingPercentBodyFat,
+      startingWeightKg: req.body.startingWeightKg,
 			goals: req.body.goals,
 			preferences: {
 				Location: req.body.preferences.Location,
