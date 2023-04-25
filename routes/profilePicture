@@ -5,7 +5,7 @@ const User = require("../models/profileSchema.js");
 
 const multer = require("multer");
 const storage = multer.memoryStorage();
-const upload = multer();
+const upload = multer({storage: storage});
 
 const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
@@ -50,10 +50,11 @@ router.get("/:userId", async (request, response) => {
 
 
 //add profile picture
-router.post("/:userId", upload.any(), async (request, response) => {
+router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("userid: ", request.params.userId);
-	console.log("req.body: ", request.body)
-	console.log("req.file: ", request.file);
+	console.log("req.body", request.body);
+	console.log("req.file", request.file);
+	console.log("req.files: ", request.files )
 	//console.log("request object", request);
 	let params;
 	try {
