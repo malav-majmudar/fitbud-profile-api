@@ -52,7 +52,8 @@ router.get("/:userId", async (request, response) => {
 //add profile picture
 router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("userid: ", request.params.userId);
-	console.log("req.body", request.body);
+	console.log("req.body: ", request.body)
+	console.log("req.file: ", request.file);
 	//console.log("request object", request);
 	let params;
 	try {
