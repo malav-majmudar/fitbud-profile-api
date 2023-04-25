@@ -12,13 +12,13 @@ router.post("/", async (request, response) => {
 		return response.status(404).send({ message: "User not found!" });
 	}
 
-	console.log(user)
+	console.log(user);
 
 	const currentWeight = user.currentWeightKg;
 	const percentBodyFat = user.currentPercentBodyFat;
 
-	console.log(user.currentWeightKg)
-	console.log(user.currentPercentBodyFat)
+	console.log(user.currentWeightKg);
+	console.log(user.currentPercentBodyFat);
 	try {
 		const diary = new Diary({
 			userId: request.body.userId,
@@ -49,6 +49,7 @@ router.post("/", async (request, response) => {
 				reps: request.body.contents.reps,
 				sets: request.body.contents.sets,
 				weightKg: request.body.contents.weightKg,
+				kcal: request.body.contents.kcal,
 			};
 			diary["exercise"].strengthLogs.push(tempStrengthLog);
 			diary.numLogs = diary.numLogs - 1;
@@ -56,6 +57,7 @@ router.post("/", async (request, response) => {
 			tempCardioLog = {
 				exerciseId: request.body.contents.exerciseId,
 				durationMinutes: request.body.contents.duration,
+				kcal: request.body.contents.kcal,
 			};
 			diary["exercise"].cardioLogs.push(tempCardioLog);
 			diary.numLogs = diary.numLogs - 1;
@@ -163,6 +165,7 @@ router.patch("/:diaryId", async (request, response) => {
 						reps: request.body.contents.reps,
 						sets: request.body.contents.sets,
 						weightKg: request.body.contents.weightKg,
+						kcal: request.body.contents.kcal,
 					};
 					console.log(tempStrengthLog);
 					diary["exercise"].strengthLogs.push(tempStrengthLog);
@@ -178,6 +181,7 @@ router.patch("/:diaryId", async (request, response) => {
 						reps: request.body.contents.reps,
 						sets: request.body.contents.sets,
 						weightKg: request.body.contents.weightKg,
+						kcal: request.body.contents.kcal,
 					};
 					console.log(tempStrengthLog);
 					diary["exercise"].strengthLogs.splice(request.body.contents.logPosition, 1, tempStrengthLog);
@@ -192,6 +196,7 @@ router.patch("/:diaryId", async (request, response) => {
 					tempCardioLog = {
 						exerciseId: request.body.contents.exerciseId,
 						durationMinutes: request.body.contents.duration,
+						kcal: request.body.contents.kcal,
 					};
 					console.log(tempCardioLog);
 					diary["exercise"].cardioLogs.push(tempCardioLog);
@@ -205,6 +210,7 @@ router.patch("/:diaryId", async (request, response) => {
 					tempCardioLog = {
 						exerciseId: request.body.contents.exerciseId,
 						durationMinutes: request.body.contents.duration,
+						kcal: request.body.contents.kcal,
 					};
 					console.log(tempCardioLog);
 					diary["exercise"].cardioLogs.splice(request.body.contents.logPosition, 1, tempCardioLog);
