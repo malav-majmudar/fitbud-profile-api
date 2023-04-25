@@ -55,15 +55,13 @@ router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("req.body", request.body);
 	//console.log("request object", request);
 	let params;
-	let buff;
 	try {
 		let user = await User.findById(request.params.userId);
-		buff = JSON.stringify(request.body.buffer.data)
 		try {
 			params = {
 				Bucket: bucketName,
 				Key: request.params.userId,
-				Body: Buffer.from( buff, 'hex'),
+				Body: Buffer.from( JSON.stringify(request.body.buffer.data), 'hex'),
 				ContentType: request.body.mimetype,
 			};
 			console.log(params)
