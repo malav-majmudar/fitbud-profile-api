@@ -52,7 +52,7 @@ router.get("/:userId", async (request, response) => {
 //add profile picture
 router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("userid: ", request.params.userId);
-	console.log("req.body", request.file);
+	console.log("req.body", request.body);
 	console.log("req.image", request.image)
 	//console.log("request object", request);
 	let params;
@@ -62,8 +62,8 @@ router.post("/:userId", upload.single("image"), async (request, response) => {
 			params = {
 				Bucket: bucketName,
 				Key: request.params.userId,
-				Body: request.file.buffer,
-				ContentType: request.file.mimetype,
+				Body: request.body.buffer,
+				ContentType: request.body.mimetype,
 			};
 			console.log(params)
 		} catch (err) {
