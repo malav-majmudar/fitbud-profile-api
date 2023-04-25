@@ -50,11 +50,11 @@ router.get("/:userId", async (request, response) => {
 
 
 //add profile picture
-router.post("/:userId", upload.any(), async (request, response) => {
+router.post("/:userId", upload.single("image"), async (request, response) => {
 	console.log("userid: ", request.params.userId);
 	console.log("req.body", request.body);
 	console.log("req.file", request.file);
-	console.log("req.files: ", request.files )
+	console.log("req.files: ", request.files)
 	//console.log("request object", request);
 	let params;
 	try {
