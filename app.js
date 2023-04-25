@@ -32,8 +32,10 @@ app.use((req, res, next) => {
 const usersRouter = require('./routes/users')
 const profileRouter = require('./routes/createProfile')
 const diaryRouter = require('./routes/diary')
+const profilePictureRouter = require('./routes/profilePicture')
 
 
 app.use('/users', usersRouter)     
 app.use('/createProfile', profileRouter)    
 app.use('/diary', diaryRouter)
+app.use('/profilePicture', profilePictureRouter)

@@ -1,0 +1,83 @@
+require("dotenv").config();
+const express = require("express");
+const router = express.Router();
+const User = require("../models/profileSchema.js");
+
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+const s3 = new S3Client({
+	credentials: {
+		accessKeyId: accessKey,
+		secretAccessKey: secretAccessKey,
+	},
+	region: bucketRegion,
+});
+
+//get profile picture
+router.get("/:userId", async (request, response) => {
+	try {
+		let user = await User.findById(request.params.userId);
+
+		if(user.hasProfilePicture === true) {
+			const getObjectParams = {
+				Bucket: bucketName,
+				Key: request.params.userId,
+			};
+
+			const command = new GetObjectCommand(getObjectParams);
+			const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+			console.log(url)
+			response.status(200).send({url: url, message: "URL sent"})
+		}
+		else {
+			response.status(400).send({message: "User does not have a profile picture!"})
+		}
+	} catch (err) {
+		response.status(500).send({ message: "Internal Error" });
+		console.log(err);
+	}
+});
+
+
+//add profile picture
+router.post("/:userId", upload.single("image"), async (request, response) => {
+	console.log("userid: ", request.params.userId);
+	console.log("req.file", request.file);
+	//console.log("request object", request);
+	let params;
+	try {
+		let user = await User.findById(request.params.userId);
+		try {
+			params = {
+				Bucket: bucketName,
+				Key: request.params.userId,
+				Body: request.file.buffer,
+				ContentType: request.file.mimetype,
+			};
+			console.log(params)
+		} catch (err) {
+			return response.status(400).send({ message: `There was an issue with image request: Error: ${err.message}` })
+		}
+
+		const command = new PutObjectCommand(params);
+		await s3.send(command);
+
+		user.hasProfilePicture = true;
+		user.save()
+		response.status(201).send({ message: "Picture saved in database and s3!" });
+	} catch (err) {
+		response.status(500).send({ message: `There was an error: ${err.message}` });
+	}
+});
+
+module.exports = router;
