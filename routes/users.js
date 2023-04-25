@@ -39,7 +39,7 @@ router.patch("/:userId", async (req, response) => {
 			lastName: req.body.lastName,
 			profilePicture: req.body.profilePicture,
 			birthdate: new Date(req.body.birthdate),
-			sex: req.body.sex.toLowerCase(),
+			sex: req.body.sex,
 			heightCm: req.body.heightCm,
 			currentWeightKg: {
 				value: req.body.currentWeightKg,
