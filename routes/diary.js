@@ -56,7 +56,7 @@ router.post("/", async (request, response) => {
 		} else if (request.body.type === "cardio") {
 			tempCardioLog = {
 				exerciseId: request.body.contents.exerciseId,
-				durationMinutes: request.body.contents.duration,
+				durationMinutes: request.body.contents.durationMinutes,
 				kcal: request.body.contents.kcal,
 			};
 			diary["exercise"].cardioLogs.push(tempCardioLog);
@@ -195,7 +195,7 @@ router.patch("/:diaryId", async (request, response) => {
 				if (request.body.action === "addLog") {
 					tempCardioLog = {
 						exerciseId: request.body.contents.exerciseId,
-						durationMinutes: request.body.contents.duration,
+						durationMinutes: request.body.contents.durationMinutes,
 						kcal: request.body.contents.kcal,
 					};
 					console.log(tempCardioLog);
@@ -209,7 +209,7 @@ router.patch("/:diaryId", async (request, response) => {
 				} else if (request.body.action === "updateLog") {
 					tempCardioLog = {
 						exerciseId: request.body.contents.exerciseId,
-						durationMinutes: request.body.contents.duration,
+						durationMinutes: request.body.contents.durationMinutes,
 						kcal: request.body.contents.kcal,
 					};
 					console.log(tempCardioLog);
