@@ -48,6 +48,10 @@ router.get("/:userId", async (request, response) => {
 	}
 });
 
+// router.use((res, next) => {
+// 	res.header('Access-Control-Allow-Origin', '*');
+// 	next();
+//   });
 
 //add profile picture
 router.post("/:userId", upload.single("image"), async (request, response) => {
@@ -75,6 +79,7 @@ router.post("/:userId", upload.single("image"), async (request, response) => {
 
 		user.hasProfilePicture = true;
 		user.save()
+		response.header('Access-Control-Allow-Origin', '*');
 		return response.status(201).send({ message: "Picture saved in database and s3!" });
 	} catch (err) {
 		return response.status(500).send({ message: `There was an error: ${err.message}` });
