@@ -41,6 +41,7 @@ router.patch("/:userId", async (req, response) => {
 			birthdate: new Date(req.body.birthdate),
 			sex: req.body.sex,
 			heightCm: req.body.heightCm,
+			activityLevel: req.body.activityLevel,
 			currentWeightKg: {
 				value: req.body.currentWeightKg.value,
 				date: req.body.currentWeightKg.date,
@@ -49,9 +50,18 @@ router.patch("/:userId", async (req, response) => {
 				value: req.body.currentPercentBodyFat.value,
 				date: req.body.currentPercentBodyFat.date,
 			},
-      startingPercentBodyFat: req.body.startingPercentBodyFat,
-      startingWeightKg: req.body.startingWeightKg,
-			goals: req.body.goals,
+      		startingPercentBodyFat: req.body.startingPercentBodyFat,
+      		startingWeightKg: req.body.startingWeightKg,
+			goals:{
+				weightGoal:req.body.goals.weightGoal,
+				calorieGoal:req.body.goals.calorieGoal,
+				weightDelta:req.body.goals.weightDelta,
+				macroBreakdown:{
+					carbs:req.body.goals.macroBreakdown.carbs,
+					fat:req.body.goals.macroBreakdown.fat,
+					protein:req.body.goals.macroBreakdown.protein,
+				}
+			},
 			preferences: {
 				Location: req.body.preferences.Location,
 				unitPreference: req.body.preferences.unitPreference,
