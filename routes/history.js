@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const History = require("../models/historySchema.js");
 
-
 router.get("/:userId", async (request, response) => {
 	try {
 		if (request.params.userId.length != 24) {
@@ -13,7 +12,7 @@ router.get("/:userId", async (request, response) => {
 				return response.status(404).json({ message: "History Not Found" });
 			} else {
 				response.status(200);
-				response.send(recentHistory);
+				response.send(recentHistory.searchHistory);
 			}
 		}
 	} catch (e) {
