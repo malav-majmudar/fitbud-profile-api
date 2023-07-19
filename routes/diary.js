@@ -85,7 +85,7 @@ router.post("/", async (request, response) => {
 				function FindByFoodId(searchLog) {
 					console.log(searchLog._id);
 					console.log(this);
-					if (searchLog._id == this) {
+					if (String(searchLog._id) == this) {
 						return true;
 					}
 				}
@@ -230,7 +230,7 @@ router.patch("/:diaryId", async (request, response) => {
 						function FindByFoodId(searchLog) {
 							console.log(searchLog._id);
 							console.log(this);
-							if (searchLog._id == this) {
+							if (String(searchLog._id) == this) {
 								return true;
 							}
 						}
