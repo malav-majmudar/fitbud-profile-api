@@ -56,12 +56,12 @@ router.post("/", async (request, response) => {
 
 				tempSearchLog = {
 					_id: request.body.contents.foodId,
-					name: request.body.name,
-					brandName: request.body.brandName,
-					brandOwner: request.body.brandOwner,
-					isVerified: request.body.isVerified,
+					name: request.body.contents.name,
+					brandName: request.body.contents.brandName,
+					brandOwner: request.body.contents.brandOwner,
+					isVerified: request.body.contents.isVerified,
 				};
-				console.log(tempSearchLog)
+				console.log(tempSearchLog);
 
 				newLog.searchHistory.push(tempSearchLog);
 				await newLog.save();
@@ -76,10 +76,10 @@ router.post("/", async (request, response) => {
 
 				tempSearchLog = {
 					_id: request.body.contents.foodId,
-					name: request.body.name,
-					brandName: request.body.brandName,
-					brandOwner: request.body.brandOwner,
-					isVerified: request.body.isVerified,
+					name: request.body.contents.name,
+					brandName: request.body.contents.brandName,
+					brandOwner: request.body.contents.brandOwner,
+					isVerified: request.body.contents.isVerified,
 				};
 				//callback function to find if the foodId already exists
 				function FindByFoodId(searchLog) {
@@ -198,12 +198,12 @@ router.patch("/:diaryId", async (request, response) => {
 
 					tempSearchLog = {
 						_id: request.body.contents.foodId,
-						name: request.body.name,
-						brandName: request.body.brandName,
-						brandOwner: request.body.brandOwner,
-						isVerified: request.body.isVerified,
+						name: request.body.contents.name,
+						brandName: request.body.contents.brandName,
+						brandOwner: request.body.contents.brandOwner,
+						isVerified: request.body.contents.isVerified,
 					};
-					console.log(tempSearchLog)
+					console.log(tempSearchLog);
 
 					newLog.searchHistory.push(tempSearchLog);
 					await newLog.save();
@@ -218,10 +218,10 @@ router.patch("/:diaryId", async (request, response) => {
 
 					tempSearchLog = {
 						_id: request.body.contents.foodId,
-						name: request.body.name,
-						brandName: request.body.brandName,
-						brandOwner: request.body.brandOwner,
-						isVerified: request.body.isVerified,
+						name: request.body.contents.name,
+						brandName: request.body.contents.brandName,
+						brandOwner: request.body.contents.brandOwner,
+						isVerified: request.body.contents.isVerified,
 					};
 					//callback function to find if the foodId already exists
 					function FindByFoodId(searchLog) {
