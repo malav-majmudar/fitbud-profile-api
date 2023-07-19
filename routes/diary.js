@@ -75,7 +75,7 @@ router.post("/", async (request, response) => {
 				let foodId = request.body.contents.foodId;
 
 				tempSearchLog = {
-					foodId: request.body.contents.foodId,
+					_id: request.body.contents.foodId,
 					name: request.body.name,
 					brandName: request.body.brandName,
 					brandOwner: request.body.brandOwner,
@@ -217,7 +217,7 @@ router.patch("/:diaryId", async (request, response) => {
 					let foodId = request.body.contents.foodId;
 
 					tempSearchLog = {
-						foodId: request.body.contents.foodId,
+						_id: request.body.contents.foodId,
 						name: request.body.name,
 						brandName: request.body.brandName,
 						brandOwner: request.body.brandOwner,
