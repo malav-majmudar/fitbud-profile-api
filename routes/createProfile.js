@@ -15,6 +15,7 @@ router.post("/", async (req, res) => {
 	currentDate = new Date(currentDate);
 	console.log(currentDate);
 
+	//filling the new user with the body of the request
 	let user = new User({
 		_id: req.body.userId,
 		firstName: req.body.firstName,

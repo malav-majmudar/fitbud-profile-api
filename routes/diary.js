@@ -2,9 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Diary = require("../models/diarySchema.js");
 const User = require("../models/profileSchema.js");
+const History = require("../models/historySchema.js");
 const mongoose = require("mongoose");
+const NUMSEARCHHISTORY = 50;
+const NUMDIARYENTRIES = 30;
 
 router.post("/", async (request, response) => {
+	//logging the request to the console for debugging purposes, as well as searching for the user
 	console.log(request.body);
 	let user = await User.findById(request.body.userId);
 
@@ -14,19 +18,22 @@ router.post("/", async (request, response) => {
 
 	console.log(user);
 
+	//getting the weight and body fat objects to store in the diary upon creation
 	const currentWeight = user.currentWeightKg;
 	const percentBodyFat = user.currentPercentBodyFat;
 
 	console.log(user.currentWeightKg);
 	console.log(user.currentPercentBodyFat);
+	//creating the new diary, running through several if statements to check which log is being added currently and adding it
 	try {
 		const diary = new Diary({
 			userId: request.body.userId,
 			timestamp: new Date(request.query.date),
-			numLogs: 30,
+			numLogs: NUMDIARYENTRIES,
 			diaryWeightKg: currentWeight.value,
 			diaryPercentBodyFat: percentBodyFat.value,
 		});
+		//diary log type is food
 		if (request.body.type === "food") {
 			tempFoodLog = {
 				foodId: request.body.contents.foodId,
@@ -36,6 +43,71 @@ router.post("/", async (request, response) => {
 			};
 			diary[request.body.contents.mealPosition].foodLogs.push(tempFoodLog);
 			diary.numLogs = diary.numLogs - 1;
+
+			//for now in the food request only, we are saving recent foods added. We check under the food request if the user has
+			//recent logs already and will append or move the food if they do. If not, we create a new log and add the first entry
+			let recentLogs = await History.findById(request.body.userId);
+			console.log(recentLogs);
+			if (!recentLogs) {
+				console.log("Intializing a new log");
+				const newLog = new History({
+					_id: request.body.userId,
+				});
+
+				tempSearchLog = {
+					foodId: request.body.contents.foodId,
+					name: request.body.name,
+					brandName: request.body.brandName,
+					brandOwner: request.body.brandOwner,
+					isVerified: request.body.isVerified,
+				};
+
+				newLog.searchHistory.push(tempSearchLog);
+				await newLog.save();
+			}
+
+			//now we have to deal with creating an appropriate "recent" foods added. This current search will be prioritized and moved to the top.
+			//Once the user has extended past 50 recent searches, we will start removing the last entry and add the new one. Also, of the food
+			//already exists in their searches, we have to move the old one to the top
+			else {
+				console.log("Updating current searches");
+				let foodId = request.body.contents.foodId;
+
+				tempSearchLog = {
+					foodId: request.body.contents.foodId,
+					name: request.body.name,
+					brandName: request.body.brandName,
+					brandOwner: request.body.brandOwner,
+					isVerified: request.body.isVerified,
+				};
+				//callback function to find if the foodId already exists
+				function FindByFoodId(searchLog) {
+					if (searchLog.foodId == this) {
+						return true;
+					}
+				}
+				console.log(recentLogs.searchHistory.findIndex(FindByFoodId, foodId));
+				if (recentLogs.searchHistory.findIndex(FindByFoodId, foodId) === -1) {
+					console.log("Item was not found, we add it to the front");
+					if (recentLogs.searchHistory.length < NUMSEARCHHISTORY) {
+						console.log("Less than 50 items, just append to front");
+						console.log(tempSearchLog);
+						recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+					} else {
+						console.log("Surpassed 50 items, pop the last item and add the current one to the front");
+						console.log(tempSearchLog);
+						recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+						recentLogs.searchHistory.pop();
+					}
+				} else {
+					console.log("Remove it from the middle and append to front");
+					console.log(tempSearchLog);
+					recentLogs.searchHistory.splice(recentLogs.searchHistory.findIndex(FindByFoodId, foodId), 1);
+					recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+				}
+				await recentLogs.save();
+			}
+			//diary log type is recipe
 		} else if (request.body.type === "recipe") {
 			tempRecipeLog = {
 				recipeId: request.body.contents.recipeId,
@@ -43,6 +115,8 @@ router.post("/", async (request, response) => {
 			};
 			diary[request.body.contents.mealPosition].recipeLogs.push(tempRecipeLog);
 			diary.numLogs = diary.numLogs - 1;
+
+			//diary log type is strength
 		} else if (request.body.type === "strength") {
 			tempStrengthLog = {
 				exerciseId: request.body.contents.exerciseId,
@@ -53,6 +127,7 @@ router.post("/", async (request, response) => {
 			};
 			diary["exercise"].strengthLogs.push(tempStrengthLog);
 			diary.numLogs = diary.numLogs - 1;
+			//diary log type is cardio
 		} else if (request.body.type === "cardio") {
 			tempCardioLog = {
 				exerciseId: request.body.contents.exerciseId,
@@ -61,6 +136,7 @@ router.post("/", async (request, response) => {
 			};
 			diary["exercise"].cardioLogs.push(tempCardioLog);
 			diary.numLogs = diary.numLogs - 1;
+			//diary log type is workout
 		} else if (request.body.type === "workout") {
 			tempWorkoutLog = {
 				workoutId: request.body.contents.workoutId,
@@ -71,8 +147,10 @@ router.post("/", async (request, response) => {
 			diary["exercise"].workoutLogs.push(tempWorkoutLog);
 		}
 
+		//saving the diary after we are done finding what the first log is
 		try {
 			const newdiary = await diary.save();
+			//returning the diary to the frontend
 			return response.status(201).send(diary);
 		} catch (err) {
 			return response.status(400).send({ message: err.message });
@@ -84,10 +162,13 @@ router.post("/", async (request, response) => {
 });
 
 router.patch("/:diaryId", async (request, response) => {
+	//logging the body for debugging purposes, retrieving the diary the user is attempting to edit so we can change
+	//the contents
 	console.log(request.body);
 	const diaryId = request.params.diaryId;
 	const diary = await Diary.findById(diaryId);
 
+	//try catch related to various errors that might occur
 	try {
 		if (String(diary.userId) !== request.body.userId) {
 			return response.status(400).send({ message: "Invalid user access!" });
@@ -96,11 +177,78 @@ router.patch("/:diaryId", async (request, response) => {
 		} else if (diary.numLogs === 0) {
 			return response.status(400).send({ message: "You have ran out of logs!" });
 		} else {
+			//similar to the post, we match what type of log is being chosen, what type of action will be done, and then executing said action
+			//many of the next ifs deal with that
 			if (request.body.type === "food") {
 				console.log("food log will be accessed");
 				console.log(request.body.action === "addLog");
 				console.log(request.body.action === "deleteLog");
 				console.log(request.body.action === "updateLog");
+
+				//for now in the food request only, we are saving recent foods added. We check under the food request if the user has
+				//recent logs already and will append or move the food if they do. If not, we create a new log and add the first entry
+				let recentLogs = await History.findById(request.body.userId);
+				console.log(recentLogs);
+				if (!recentLogs) {
+					console.log("Intializing a new log");
+					const newLog = new History({
+						_id: request.body.userId,
+					});
+
+					tempSearchLog = {
+						foodId: request.body.contents.foodId,
+						name: request.body.name,
+						brandName: request.body.brandName,
+						brandOwner: request.body.brandOwner,
+						isVerified: request.body.isVerified,
+					};
+
+					newLog.searchHistory.push(tempSearchLog);
+					await newLog.save();
+				}
+
+				//now we have to deal with creating an appropriate "recent" foods added. This current search will be prioritized and moved to the top.
+				//Once the user has extended past 50 recent searches, we will start removing the last entry and add the new one. Also, of the food
+				//already exists in their searches, we have to move the old one to the top
+				else {
+					console.log("Updating current searches");
+					let foodId = request.body.contents.foodId;
+
+					tempSearchLog = {
+						foodId: request.body.contents.foodId,
+						name: request.body.name,
+						brandName: request.body.brandName,
+						brandOwner: request.body.brandOwner,
+						isVerified: request.body.isVerified,
+					};
+					//callback function to find if the foodId already exists
+					function FindByFoodId(searchLog) {
+						if (searchLog.foodId == this) {
+							return true;
+						}
+					}
+					console.log(recentLogs.searchHistory.findIndex(FindByFoodId, foodId));
+					if (recentLogs.searchHistory.findIndex(FindByFoodId, foodId) === -1) {
+						console.log("Item was not found, we add it to the front");
+						if (recentLogs.searchHistory.length < NUMSEARCHHISTORY) {
+							console.log("Less than 50 items, just append to front");
+							console.log(tempSearchLog);
+							recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+						} else {
+							console.log("Surpassed 50 items, pop the last item and add the current one to the front");
+							console.log(tempSearchLog);
+							recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+							recentLogs.searchHistory.pop();
+						}
+					} else {
+						console.log("Remove it from the middle and append to front");
+						console.log(tempSearchLog);
+						recentLogs.searchHistory.splice(recentLogs.searchHistory.findIndex(FindByFoodId, foodId), 1);
+						recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+					}
+					await recentLogs.save();
+				}
+
 				if (request.body.action === "addLog") {
 					tempFoodLog = {
 						foodId: request.body.contents.foodId,
@@ -247,6 +395,7 @@ router.patch("/:diaryId", async (request, response) => {
 				}
 			}
 		}
+		//saving the diary once it is finished to reflect the changes
 		diary.save();
 		response.status(200).send({ message: "Diary successfully updated!" });
 	} catch (e) {
@@ -256,6 +405,7 @@ router.patch("/:diaryId", async (request, response) => {
 });
 
 router.get("/:diaryId", async (request, response) => {
+	//retrieving the diary that the user wants to view if they have the specific diary id
 	try {
 		if (request.params.diaryId.length != 24) {
 			response.status(400).send({ message: "Invalid ID Parameter!" });
@@ -280,6 +430,8 @@ router.get("/", async (request, response) => {
 			response.status(400).send({ message: "Invalid ID parameter!" });
 		}
 
+		//this diary retrieval is based on the date a user picks for the diary. If the format isn't correct, we throw an error
+		//that reflects that, otherwise we find the diary and send it back if it is found
 		const datecheck = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
 
 		if (!datecheck.test(request.query.date)) {
@@ -306,6 +458,7 @@ router.get("/", async (request, response) => {
 });
 
 router.delete("/", async (request, response) => {
+	//deleting all the diaries once a user decides to remove their account. Individual diaries can be deleted in the patch section
 	try {
 		if (request.query.userId.length != 24) {
 			response.status(400).json({ message: "Invalid UserId" });
