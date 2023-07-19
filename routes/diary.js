@@ -55,12 +55,13 @@ router.post("/", async (request, response) => {
 				});
 
 				tempSearchLog = {
-					foodId: request.body.contents.foodId,
+					_id: request.body.contents.foodId,
 					name: request.body.name,
 					brandName: request.body.brandName,
 					brandOwner: request.body.brandOwner,
 					isVerified: request.body.isVerified,
 				};
+				console.log(tempSearchLog)
 
 				newLog.searchHistory.push(tempSearchLog);
 				await newLog.save();
@@ -196,12 +197,13 @@ router.patch("/:diaryId", async (request, response) => {
 					});
 
 					tempSearchLog = {
-						foodId: request.body.contents.foodId,
+						_id: request.body.contents.foodId,
 						name: request.body.name,
 						brandName: request.body.brandName,
 						brandOwner: request.body.brandOwner,
 						isVerified: request.body.isVerified,
 					};
+					console.log(tempSearchLog)
 
 					newLog.searchHistory.push(tempSearchLog);
 					await newLog.save();

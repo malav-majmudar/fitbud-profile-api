@@ -7,11 +7,6 @@ const history_schema = new mongoose.Schema({
 
 	searchHistory: [
 		{
-			foodId: {
-				type: String,
-				required: false,
-			},
-
 			name: {
 				type: String,
 				required: false,
