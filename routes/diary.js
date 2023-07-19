@@ -186,72 +186,72 @@ router.patch("/:diaryId", async (request, response) => {
 				console.log(request.body.action === "deleteLog");
 				console.log(request.body.action === "updateLog");
 
-				//for now in the food request only, we are saving recent foods added. We check under the food request if the user has
-				//recent logs already and will append or move the food if they do. If not, we create a new log and add the first entry
-				let recentLogs = await History.findById(request.body.userId);
-				console.log(recentLogs);
-				if (!recentLogs) {
-					console.log("Intializing a new log");
-					const newLog = new History({
-						_id: request.body.userId,
-					});
-
-					tempSearchLog = {
-						_id: request.body.contents.foodId,
-						name: request.body.contents.name,
-						brandName: request.body.contents.brandName,
-						brandOwner: request.body.contents.brandOwner,
-						isVerified: request.body.contents.isVerified,
-					};
-					console.log(tempSearchLog);
-
-					newLog.searchHistory.push(tempSearchLog);
-					await newLog.save();
-				}
-
-				//now we have to deal with creating an appropriate "recent" foods added. This current search will be prioritized and moved to the top.
-				//Once the user has extended past 50 recent searches, we will start removing the last entry and add the new one. Also, of the food
-				//already exists in their searches, we have to move the old one to the top
-				else {
-					console.log("Updating current searches");
-					let foodId = request.body.contents.foodId;
-
-					tempSearchLog = {
-						_id: request.body.contents.foodId,
-						name: request.body.contents.name,
-						brandName: request.body.contents.brandName,
-						brandOwner: request.body.contents.brandOwner,
-						isVerified: request.body.contents.isVerified,
-					};
-					//callback function to find if the foodId already exists
-					function FindByFoodId(searchLog) {
-						if (searchLog._id == this) {
-							return true;
-						}
-					}
-					console.log(recentLogs.searchHistory.findIndex(FindByFoodId, foodId));
-					if (recentLogs.searchHistory.findIndex(FindByFoodId, foodId) === -1) {
-						console.log("Item was not found, we add it to the front");
-						if (recentLogs.searchHistory.length < NUMSEARCHHISTORY) {
-							console.log("Less than 50 items, just append to front");
-							console.log(tempSearchLog);
-							recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
-						} else {
-							console.log("Surpassed 50 items, pop the last item and add the current one to the front");
-							console.log(tempSearchLog);
-							recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
-							recentLogs.searchHistory.pop();
-						}
-					} else {
-						console.log("Remove it from the middle and append to front");
-						console.log(tempSearchLog);
-						recentLogs.searchHistory.splice(recentLogs.searchHistory.findIndex(FindByFoodId, foodId), 1);
-						recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
-					}
-					await recentLogs.save();
-				}
-
 				if (request.body.action === "addLog") {
+					//for now in the food request only, we are saving recent foods added. We check under the food request if the user has
+					//recent logs already and will append or move the food if they do. If not, we create a new log and add the first entry
+					let recentLogs = await History.findById(request.body.userId);
+					console.log(recentLogs);
+					if (!recentLogs) {
+						console.log("Intializing a new log");
+						const newLog = new History({
+							_id: request.body.userId,
+						});
+
+						tempSearchLog = {
+							_id: request.body.contents.foodId,
+							name: request.body.contents.name,
+							brandName: request.body.contents.brandName,
+							brandOwner: request.body.contents.brandOwner,
+							isVerified: request.body.contents.isVerified,
+						};
+						console.log(tempSearchLog);
+
+						newLog.searchHistory.push(tempSearchLog);
+						await newLog.save();
+					}
+
+					//now we have to deal with creating an appropriate "recent" foods added. This current search will be prioritized and moved to the top.
+					//Once the user has extended past 50 recent searches, we will start removing the last entry and add the new one. Also, of the food
+					//already exists in their searches, we have to move the old one to the top
+					else {
+						console.log("Updating current searches");
+						let foodId = request.body.contents.foodId;
+
+						tempSearchLog = {
+							_id: request.body.contents.foodId,
+							name: request.body.contents.name,
+							brandName: request.body.contents.brandName,
+							brandOwner: request.body.contents.brandOwner,
+							isVerified: request.body.contents.isVerified,
+						};
+						//callback function to find if the foodId already exists
+						function FindByFoodId(searchLog) {
+							if (searchLog._id == this) {
+								return true;
+							}
+						}
+						console.log(recentLogs.searchHistory.findIndex(FindByFoodId, foodId));
+						if (recentLogs.searchHistory.findIndex(FindByFoodId, foodId) === -1) {
+							console.log("Item was not found, we add it to the front");
+							if (recentLogs.searchHistory.length < NUMSEARCHHISTORY) {
+								console.log("Less than 50 items, just append to front");
+								console.log(tempSearchLog);
+								recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+							} else {
+								console.log("Surpassed 50 items, pop the last item and add the current one to the front");
+								console.log(tempSearchLog);
+								recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+								recentLogs.searchHistory.pop();
+							}
+						} else {
+							console.log("Remove it from the middle and append to front");
+							console.log(tempSearchLog);
+							recentLogs.searchHistory.splice(recentLogs.searchHistory.findIndex(FindByFoodId, foodId), 1);
+							recentLogs.searchHistory = [tempSearchLog, ...recentLogs.searchHistory];
+						}
+						await recentLogs.save();
+					}
+
 					tempFoodLog = {
 						foodId: request.body.contents.foodId,
 						servingName: request.body.contents.servingName,
