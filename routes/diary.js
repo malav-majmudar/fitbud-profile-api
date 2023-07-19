@@ -83,7 +83,7 @@ router.post("/", async (request, response) => {
 				};
 				//callback function to find if the foodId already exists
 				function FindByFoodId(searchLog) {
-					if (searchLog.foodId == this) {
+					if (searchLog._id == this) {
 						return true;
 					}
 				}
@@ -225,7 +225,7 @@ router.patch("/:diaryId", async (request, response) => {
 					};
 					//callback function to find if the foodId already exists
 					function FindByFoodId(searchLog) {
-						if (searchLog.foodId == this) {
+						if (searchLog._id == this) {
 							return true;
 						}
 					}
